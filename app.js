@@ -1,9 +1,5 @@
 let usersList = [];
 
-const Greeting = ({ name }) => (
-    <p>Hello, {name}!</p>  
-);
-
 const MyTable = ({ MyName, MySurname, MyLastname}) => {
 return (
 <table>
