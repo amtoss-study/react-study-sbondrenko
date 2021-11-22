@@ -1,105 +1,71 @@
 /* Hometask1 */
 
-let usersList = [];
-
-const MyTable = ({ MyName, MySurname, MyLastname}) => {
-return (
-<table>
-   <caption>Users</caption>
-   <thead>
-   <tr>
-   <th>Фамилия</th>
-    <th>Имя</th>
-    <th>Отчество</th>
-   </tr>
-   </thead>
-   <tbody>     
-   {usersList.map(
-       (value, index) => {
-           return <tr key = {index}>
-               <td>
-               {value.MyLastname}
-               </td>
-               <td>
-               {value.MyName}
-               </td>               
-               <td>
-               {value.MySurname}
-               </td>
-           </tr>
-       }
-   )}
-   </tbody>
-  </table>    
-)
+const MyTable = ({ usersList }) => {
+    return (
+        <table>
+            <caption>Users</caption>
+            <thead>
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                </tr>
+            </thead>
+            <tbody>
+                {usersList.map(
+                    (user, index) => {
+                        return <tr key={index}>
+                            <td> {user.lastname}</td>
+                            <td>{user.name}</td>
+                            <td>{user.surname}</td>
+                        </tr>
+                    }
+                )}
+            </tbody>
+        </table>
+    )
 }
 
 
-const NameForm = ({ onSubmit }) => {
+const AddUserForm = ({ onSubmit }) => {
     const [surnameValue, setSurnameValue] = React.useState('');
     const [nameValue, setNameValue] = React.useState('');
-    const [lastNameValue, setsLastNameValue] = React.useState('');
+    const [lastNameValue, setLastNameValue] = React.useState('');
+
     return (
-        <dir>
-        <MyTable >
+        <div>
+            <form
+                autoComplete="off"
+                onSubmit={event => {
+                    event.preventDefault();
+                    onSubmit({
+                        name: nameValue,
+                        surname: surnameValue,
+                        lastname: lastNameValue
+                    })
+                }}
+            >
+                <h3>Add User</h3>
+                <p>Last Name</p>
+                <input name="lastName" onChange={event => setLastNameValue(event.target.value) } />
+                <p>Name</p>
+                <input name="name" onChange={event => setNameValue(event.target.value) } />
+                <p>Second Name</p>
+                <input name="surnameValue" onChange={event => setSurnameValue(event.target.value) } />
+                <p />
+                <button type="submit">Submit</button>
+            </form>
 
-        </MyTable>
-<form
-    autoComplete="off"
-    onSubmit={event => {
-        event.preventDefault();
-        usersList.push({
-            MyName: nameValue, 
-            MySurname: surnameValue, 
-            MyLastname: lastNameValue
-        });
-        onSubmit({ name: nameValue })
-    }}
->
-
-
-    <h3>Add User</h3>
-    <p>Last Name</p>
-    <input
-        name="lastName"
-        value={lastNameValue}
-        onChange={event => {
-            setsLastNameValue(event.target.value)
-        }}
-    />    
-    <br/>
-    <p>Name</p>
-    <input
-        name="name"
-        value={nameValue}
-        onChange={event => {
-            setNameValue(event.target.value)
-        }}
-    />
-    <br/>
-    <p>Second Name</p>
-    <input
-        name="surnameValue"
-        value={surnameValue}
-        onChange={event => {
-            setSurnameValue(event.target.value)
-        }}
-    /> 
-    <br/>   
-    <button type="submit">Submit</button>
-</form>
-
-        </dir>
+        </div>
     );
 }
 
 const App = () => {
-    const [name, setName] = React.useState(null);
-    const [lastName, setLastName] = React.useState(null);
+    const [usersList, SetUsersList] = React.useState([])    
     return (
         <div>
-            <NameForm onSubmit={values => setName(values.name)} />
-            
+            <AddUserForm onSubmit={newUser => SetUsersList(oldUsersList => [...oldUsersList, newUser] )} />
+            <MyTable usersList = {usersList} />
         </div>
     );
 }
