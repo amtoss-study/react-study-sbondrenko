@@ -1,7 +1,7 @@
-import React from 'react';
-import {UserData} from '../types'
+import { UserData } from '../types'
 
-const UserTable = ( props : {usersList : UserData[] } ) => {
+const UserTable = ({ usersList, removeUser }: { usersList: UserData[], removeUser: (id: number) => void }) => {
+
     return (
         <table>
             <caption>Users</caption>
@@ -10,15 +10,19 @@ const UserTable = ( props : {usersList : UserData[] } ) => {
                     <th>Фамилия</th>
                     <th>Имя</th>
                     <th>Отчество</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                {props.usersList.map(
-                    (user : UserData, index : number)  => {
-                        return <tr key={index}>
+                {usersList.map(
+                    (user: UserData) => {
+                        return <tr key={user.id}>
                             <td> {user.lastname}</td>
                             <td>{user.name}</td>
                             <td>{user.surname}</td>
+                            <td>
+                                <button type='button' onClick={() => removeUser(user.id)}>Remove</button>
+                            </td>
                         </tr>
                     }
                 )}

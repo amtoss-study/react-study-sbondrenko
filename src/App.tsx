@@ -5,21 +5,14 @@ import { UserData } from './types';
 
 
 function App() {
-  const [usersList, SetUsersList] = React.useState<Array<UserData> >([]);
-  const getUser = (user : UserData) : UserData => {
-    const timestamp = Date.now();
-    return {
-      id: timestamp,
-      lastname: user.lastname,
-      name: user.name,
-      surname: user.surname
-    }
-  }
+  const [usersList, setUsersList] = React.useState<Array<UserData>>([]);
+
   return (
-      <div>
-          <AddUserForm onSubmit={newUser => SetUsersList(oldUsersList => [...oldUsersList, newUser] )} />
-          <UserTable usersList = {usersList} />
-      </div>
+    <div>
+      <h2>Home Task #2</h2>
+      <AddUserForm onSubmit={newUser => setUsersList(oldUsersList => [...oldUsersList, newUser])} />
+      <UserTable usersList={usersList} removeUser={id => setUsersList(usersList.filter(user => user.id !== id))} />
+    </div>
   );
 }
 
