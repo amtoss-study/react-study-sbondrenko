@@ -3,4 +3,4 @@ export type UserData = {
     lastname: string;
     name: string;
     surname: string;
-}
+};

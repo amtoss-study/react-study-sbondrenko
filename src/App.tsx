@@ -1,19 +1,22 @@
-import React from 'react';
-import UserTable from './components/UserTable'
-import AddUserForm from './components/AddUserForm'
-import { UserData } from './types';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import NavBar from "components/NavBar";
+import Home from "Pages/Home";
+import Users from "Pages/Users";
+import { UsersContextProvider } from "UsersContext";
 
-function App() {
-  const [usersList, setUsersList] = React.useState<Array<UserData>>([]);
-
-  return (
-    <div>
-      <h2>Home Task #2</h2>
-      <AddUserForm onSubmit={newUser => setUsersList(oldUsersList => [...oldUsersList, newUser])} />
-      <UserTable usersList={usersList} removeUser={id => setUsersList(usersList.filter(user => user.id !== id))} />
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <Router>
+            <UsersContextProvider>
+                <NavBar />
+                <Switch>
+                    <Route path="/users" component={Users} />
+                    <Route path="/" component={Home} />
+                </Switch>
+            </UsersContextProvider>
+        </Router>
+    );
+};
 
 export default App;

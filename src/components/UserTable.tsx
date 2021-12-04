@@ -1,7 +1,15 @@
-import { UserData } from '../types'
+import { UserData } from "types";
+import UserTableItem from "./UserTableItem";
 
-const UserTable = ({ usersList, removeUser }: { usersList: UserData[], removeUser: (id: number) => void }) => {
-
+const UserTable = ({
+    usersList,
+    removeUser,
+    getVisitUrl,
+}: {
+    usersList: UserData[];
+    removeUser: (id: number) => void;
+    getVisitUrl: (id: number) => string;
+}) => {
     return (
         <table>
             <caption>Users</caption>
@@ -11,24 +19,23 @@ const UserTable = ({ usersList, removeUser }: { usersList: UserData[], removeUse
                     <th>Имя</th>
                     <th>Отчество</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                {usersList.map(
-                    (user: UserData) => {
-                        return <tr key={user.id}>
-                            <td> {user.lastname}</td>
-                            <td>{user.name}</td>
-                            <td>{user.surname}</td>
-                            <td>
-                                <button type='button' onClick={() => removeUser(user.id)}>Remove</button>
-                            </td>
-                        </tr>
-                    }
-                )}
+                {usersList.map((user: UserData) => {
+                    return (
+                        <UserTableItem
+                            key={user.id}
+                            removeUser={removeUser}
+                            getVisitUrl={getVisitUrl}
+                            {...user}
+                        />
+                    );
+                })}
             </tbody>
         </table>
-    )
-}
+    );
+};
 
 export default UserTable;
