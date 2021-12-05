@@ -1,7 +1,15 @@
-import React from 'react';
-import {UserData} from '../types'
+import { UserData } from "types";
+import UserTableItem from "./UserTableItem";
 
-const UserTable = ( props : {usersList : UserData[] } ) => {
+const UserTable = ({
+    usersList,
+    removeUser,
+    getVisitUrl,
+}: {
+    usersList: UserData[];
+    removeUser: (id: number) => void;
+    getVisitUrl: (id: number) => string;
+}) => {
     return (
         <table>
             <caption>Users</caption>
@@ -10,21 +18,24 @@ const UserTable = ( props : {usersList : UserData[] } ) => {
                     <th>Фамилия</th>
                     <th>Имя</th>
                     <th>Отчество</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                {props.usersList.map(
-                    (user : UserData, index : number)  => {
-                        return <tr key={index}>
-                            <td> {user.lastname}</td>
-                            <td>{user.name}</td>
-                            <td>{user.surname}</td>
-                        </tr>
-                    }
-                )}
+                {usersList.map((user: UserData) => {
+                    return (
+                        <UserTableItem
+                            key={user.id}
+                            removeUser={removeUser}
+                            getVisitUrl={getVisitUrl}
+                            {...user}
+                        />
+                    );
+                })}
             </tbody>
         </table>
-    )
-}
+    );
+};
 
 export default UserTable;
