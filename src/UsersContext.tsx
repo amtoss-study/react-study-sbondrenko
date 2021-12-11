@@ -12,9 +12,9 @@ export const UsersContext = createContext<UsersContextType>({
 });
 
 export const UsersContextProvider: FunctionComponent = ({ children }) => {
-    const [users, addUser] = useState<UserData[]>([]);
+    const [users, updateUsers] = useState<UserData[]>([]);
     return (
-        <UsersContext.Provider value={{ users, updateUsers: addUser }}>
+        <UsersContext.Provider value={{ users, updateUsers: updateUsers }}>
             {children}
         </UsersContext.Provider>
     );

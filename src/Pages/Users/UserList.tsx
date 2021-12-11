@@ -25,7 +25,7 @@ const UserList = () => {
             <UserTable
                 usersList={users}
                 removeUser={(id) => deleteUser(id)}
-                getVisitUrl={(id) => `${match.url}/${id}`}
+                getUserUrl={(id) => `${match.url}/${id}`}
             />
         </div>
     );
