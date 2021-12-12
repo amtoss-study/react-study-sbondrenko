@@ -18,7 +18,7 @@ const useUsers = () => {
     
       const addUser = useCallback(
         (values: Omit<UserData, "id">) => {
-          api.post("users", values).then((data: UserData) => {
+          return api.post("users", values).then((data: UserData) => {
             updateUsers([...users, data]);
           });
         },
@@ -27,23 +27,30 @@ const useUsers = () => {
 
       const updateUser = useCallback(
         (id: number, values: Partial<UserData>) => {
-          api.patch(`users/${id}`, values).then((data: UserData) => {
+          return api.patch(`users/${id}`, values).then((data: UserData) => {
             updateUsers(users.map((v) => (v.id === id ? data : v)));
           });
         },
         [updateUsers]
       );
 
-      const deleteUser = useCallback(
+    const deleteUser = useCallback(
         (id: number) => {
-          api.del(`users/${id}`).then(() => {
-            updateUsers(users.filter((v) => v.id !== id));
-          });
+            api.del(`users/${id}`).then(() => {
+                updateUsers(users.filter((v) => v.id !== id));
+            });
         },
         [updateUsers]
-      );
+    );
 
-    const retrieveUser = (id: number) => users.find((v) => v.id === id);
+    const retrieveUser = useCallback(
+        (id: number) => {
+            return api.get(`users/${id}`).then((data: UserData) => {
+                updateUsers([...users, data]);
+            });
+        },
+        [updateUsers]
+    )
 
     return { users, addUser, retrieveUser, updateUser, deleteUser, retrieveUsers, getUser };
 };
