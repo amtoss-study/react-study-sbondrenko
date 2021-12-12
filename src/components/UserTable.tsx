@@ -26,7 +26,7 @@ const UserTable = ({
                 {usersList.map((user: UserData) => {
                     return (
                         <UserTableItem
-                            key={user.id}
+                            key={user.timestamp}
                             removeUser={removeUser}
                             getVisitUrl={getUserUrl}
                             {...user}
