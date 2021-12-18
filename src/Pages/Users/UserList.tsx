@@ -1,18 +1,28 @@
 import { useRouteMatch } from "react-router-dom";
+import {useState, useEffect} from 'react'
 
 import { UserData } from "types";
 import UserTable from "components/UserTable";
 import AddUserForm, { UserDataValues } from "components/AddUserForm";
 import useUsers from "hooks/useUsers";
+import Spinner from "components/Spinner";
 
 const UserList = () => {
-    const { users, addUser, deleteUser } = useUsers();
+    const { users, retrieveUsers, addUser, deleteUser } = useUsers();
     const match = useRouteMatch();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<null | string>(null);
 
-    const createUser = (user: UserDataValues): UserData => {
-        const timestamp = Date.now();
+    useEffect(() => {
+        setLoading(true);
+        setError(null);        
+        retrieveUsers().catch((err) => setError(`Error while loading users: ${err}`))
+        .finally(() => setLoading(false));
+      }, [retrieveUsers]);
+
+    const createUser = (user: UserDataValues): Omit<UserData, 'id'> => {
         return {
-            id: timestamp,
+            timestamp: Date.now(),
             lastname: user.lastname,
             name: user.name,
             surname: user.surname,
@@ -21,12 +31,17 @@ const UserList = () => {
 
     return (
         <div>
-            <AddUserForm onSubmit={(newUser) => addUser(createUser(newUser))} />
+            <AddUserForm onSubmit={(newUser) => {
+                addUser(createUser(newUser))
+            }
+            } />
             <UserTable
                 usersList={users}
                 removeUser={(id) => deleteUser(id)}
-                getVisitUrl={(id) => `${match.url}/${id}`}
+                getUserUrl={(id) => `${match.url}/${id}`}
             />
+            {loading && <Spinner />}
+            {error && <div style={{ color: "red" }}>{error}</div>}
         </div>
     );
 };

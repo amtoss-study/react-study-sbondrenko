@@ -7,10 +7,10 @@ const UserTableItem = ({
     name,
     surname,
     removeUser,
-    getVisitUrl,
+    getUserUrl,
 }: UserData & {
     removeUser: (id: number) => void;
-    getVisitUrl: (id: number) => string;
+    getUserUrl: (id: number) => string;
 }) => {
     return (
         <tr key={id}>
@@ -18,7 +18,7 @@ const UserTableItem = ({
             <td>{name}</td>
             <td>{surname}</td>
             <td>
-                <Link to={getVisitUrl(id)}>Details</Link>
+                <Link to={getUserUrl(id)}>Details</Link>
             </td>
             <td>
                 <button type="button" onClick={() => removeUser(id)}>
