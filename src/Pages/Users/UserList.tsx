@@ -16,12 +16,11 @@ const UserList = () => {
     useEffect(() => {
         setLoading(true);
         setError(null);        
-        retrieveUsers().catch((err) => setError(`Error while loading visits: ${err}`))
+        retrieveUsers().catch((err) => setError(`Error while loading users: ${err}`))
         .finally(() => setLoading(false));
       }, [retrieveUsers]);
 
     const createUser = (user: UserDataValues): Omit<UserData, 'id'> => {
-        console.log(user);
         return {
             timestamp: Date.now(),
             lastname: user.lastname,
@@ -33,8 +32,6 @@ const UserList = () => {
     return (
         <div>
             <AddUserForm onSubmit={(newUser) => {
-                setLoading(true);
-                setError(null);
                 addUser(createUser(newUser))
             }
             } />

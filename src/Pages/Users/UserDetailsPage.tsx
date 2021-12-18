@@ -19,7 +19,7 @@ const UserDetailsPage = () => {
         setLoading(true);
         setError(null)
         retrieveUser(userIdNum)
-            .catch((err) => setError(`Error while loading visit: ${err}`))
+            .catch((err) => setError(`Error while loading user: ${err}`))
             .finally(() => setLoading(false));
     }, [retrieveUser, userIdNum]);
     

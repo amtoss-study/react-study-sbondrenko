@@ -4,7 +4,7 @@ import UserTableItem from "./UserTableItem";
 const UserTable = ({
     usersList,
     removeUser,
-    getUserUrl: getUserUrl,
+    getUserUrl,
 }: {
     usersList: UserData[];
     removeUser: (id: number) => void;
@@ -26,9 +26,9 @@ const UserTable = ({
                 {usersList.map((user: UserData) => {
                     return (
                         <UserTableItem
-                            key={user.timestamp}
+                            key={user.id}
                             removeUser={removeUser}
-                            getVisitUrl={getUserUrl}
+                            getUserUrl={getUserUrl}
                             {...user}
                         />
                     );

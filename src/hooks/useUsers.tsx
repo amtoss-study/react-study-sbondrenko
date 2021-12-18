@@ -19,7 +19,7 @@ const useUsers = () => {
       const addUser = useCallback(
         (values: Omit<UserData, "id">) => {
           return api.post("users", values).then((data: UserData) => {
-            updateUsers([...users, data]);
+            updateUsers(prevUsers => [...prevUsers, data]);
           });
         },
         [updateUsers]
@@ -28,7 +28,7 @@ const useUsers = () => {
       const updateUser = useCallback(
         (id: number, values: Partial<UserData>) => {
           return api.patch(`users/${id}`, values).then((data: UserData) => {
-            updateUsers(users.map((v) => (v.id === id ? data : v)));
+            updateUsers(prevUsers => prevUsers.map((u) => (u.id === id ? data : u)));
           });
         },
         [updateUsers]
@@ -37,7 +37,7 @@ const useUsers = () => {
     const deleteUser = useCallback(
         (id: number) => {
             api.del(`users/${id}`).then(() => {
-                updateUsers(users.filter((v) => v.id !== id));
+                updateUsers(prevUsers => prevUsers.filter((u) => u.id !== id));
             });
         },
         [updateUsers]
@@ -46,7 +46,18 @@ const useUsers = () => {
     const retrieveUser = useCallback(
         (id: number) => {
             return api.get(`users/${id}`).then((data: UserData) => {
-                updateUsers([...users, data]);
+                updateUsers(prevUsers => {
+                    const index = prevUsers.findIndex((u) => u.id === id);
+                    if (index > -1) {
+                      // replace item at index
+                      return [
+                        ...prevUsers.slice(0, index),
+                        data,
+                        ...prevUsers.slice(index + 1),
+                      ];
+                    }
+                    return [...prevUsers, data];
+                });
             });
         },
         [updateUsers]
